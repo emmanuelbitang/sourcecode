@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Configuration;
+using System.Data;
+namespace Inventorysystem
+{
+    public partial class login : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnlogin_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["datacon"].ConnectionString))
+            {
+                SqlCommand sqlcmd = new SqlCommand("spLogQuery", sqlcon);
+                sqlcon.Open();
+                sqlcmd.CommandType = CommandType.StoredProcedure;
+                sqlcmd.Parameters.AddWithValue("@Username", txtusername.Text.Trim());
+                sqlcmd.Parameters.AddWithValue("@Password", txtpassword.Text.Trim());
+                sqlcmd.ExecuteNonQuery();
+                int count = Convert.ToInt32(sqlcmd.ExecuteScalar());
+                sqlcon.Close();
+                if (count == 1)
+                {
+                    Session["username"] = txtusername.Text.Trim();
+                    Response.Redirect("Dashboard.aspx");
+                }
+                else { lblerrormsg.Text = "Incorrect user or pass ,,/,,"; }
+            }
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------
+
+//add to WEB.Config - <configuration>
+
+ <connectionStrings>
+  <add name="datacon" 
+    connectionString="Data Source=MEMAN-PC;Initial Catalog=inventorydb;Integrated Security=True"
+    providerName="System.Data.SqlClient" />
+</connectionStrings>

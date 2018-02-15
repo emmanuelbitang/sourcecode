@@ -1,0 +1,12 @@
+ <asp:GridView ID="gvContact" runat="server" AutoGenerateColumns="false">
+            <Columns>
+                <asp:Boundfield Datafield="Name" HeaderText="Name"/>
+                <asp:Boundfield Datafield="Mobile" HeaderText="Mobile"/>
+                <asp:Boundfield Datafield="Address" HeaderText="Address"/>
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton ID="lnkView" runat="server" OnClick="lnk_Onclick" CommandArgument='<%# Eval("ContactID") %>'>View</asp:LinkButton>
+                    </ItemTemplate>  
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
